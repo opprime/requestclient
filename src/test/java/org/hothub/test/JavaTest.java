@@ -3,10 +3,8 @@ package org.hothub.test;
 import okhttp3.*;
 import org.hothub.RequestClient;
 import org.hothub.base.AppConstants;
-import org.hothub.http.OnRequestListener;
 import org.hothub.pojo.FileBody;
 import org.hothub.response.ResultBody;
-import org.hothub.utils.CommonUtils;
 
 import java.io.File;
 
