@@ -6,14 +6,16 @@
 
     <groupId>org.hothub</groupId>
     <artifactId>requestclient</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>requestclient</name>
+    <url>http://hothub.org/</url>
+    <description>HTTP UTIL FOR JAVA</description>
 
     <properties>
         <junit.version>4.12</junit.version>
-        <fastjson.version>1.2.35</fastjson.version>
         <slf4j.version>1.7.13</slf4j.version>
-        <log4j.version>2.7</log4j.version>
-        <hamcrest.version>1.3</hamcrest.version>
+        <!--<hamcrest.version>1.3</hamcrest.version>-->
         <okhttp.version>3.9.1</okhttp.version>
         <!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
     </properties>
@@ -26,25 +28,25 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
-            <!--<type>pom</type>-->
-            <!--<scope>runtime</scope>-->
+            <type>pom</type>
+            <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <version>1.3</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.hamcrest</groupId>-->
+            <!--<artifactId>hamcrest-core</artifactId>-->
+            <!--<version>1.3</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>log4j-over-slf4j</artifactId>-->
+            <!--<version>${slf4j.version}</version>-->
+        <!--</dependency>-->
 
 
 
@@ -53,12 +55,60 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
 
 
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>http://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <scm>
+        <connection>scm:git:git@github.com:opprime/requestclient.git</connection>
+        <developerConnection>scm:git:git@github.com:opprime/requestclient.git</developerConnection>
+        <url>git@github.com:opprime/requestclient.git</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>opprime</name>
+            <email>opprime@qq.com</email>
+            <url>https://github.com/opprime</url>
+        </developer>
+    </developers>
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <!-- 这个id需要在setting.xml中设置，后边讲到  -->
+            <id>oss</id>
+            <name>OSS Snapshots Repository</name>
+            <!-- 这里的url就是Issue中回复的snapshots 的repo地址-->
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>oss</id>
+            <name>OSS Staging Repository</name>
+            <!-- 这里的url就是Issue中回复的staging 的repo地址-->
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+
     <build>
+        <pluginManagement>
+
         <plugins>
             <!-- 资源文件拷贝插件 -->
             <plugin>
@@ -82,38 +132,63 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <!--<configuration>-->
-                <!--<warName>${project.artifactId}</warName>-->
-                <!--<webResources>-->
-                <!--<resource>-->
-                <!--<directory>${project.basedir}/libs</directory>-->
-                <!--<targetPath>WEB-INF/lib</targetPath>-->
-                <!--<includes>-->
-                <!--<include>*.jar</include>-->
-                <!--</includes>-->
-                <!--</resource>-->
-                <!--</webResources>-->
-                <!--</configuration>-->
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
             </plugin>
             <plugin>
+                <!-- Source -->
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.0.2</version>
-                <!--<executions>-->
-                <!--<execution>-->
-                <!--<id>copy</id>-->
-                <!--<phase>package</phase>-->
-                <!--<goals>-->
-                <!--<goal>copy-dependencies</goal>-->
-                <!--</goals>-->
-                <!--<configuration>-->
-                <!--<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>-->
-                <!--</configuration>-->
-                <!--</execution>-->
-                <!--</executions>-->
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- JavaDoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- GPG -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
+        </pluginManagement>
+
     </build>
+
 </project>
