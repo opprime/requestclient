@@ -108,6 +108,8 @@ public class ResultBody {
         return request;
     }
 
+
+
     public Response getResponse() {
         return response;
     }

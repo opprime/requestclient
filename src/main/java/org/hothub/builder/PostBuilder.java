@@ -1,5 +1,6 @@
 package org.hothub.builder;
 
+import org.hothub.base.ContentType;
 import org.hothub.base.RequestMethod;
 import org.hothub.core.AbstractBuilder;
 import org.hothub.pojo.FileBody;
@@ -30,6 +31,12 @@ public class PostBuilder extends AbstractBuilder<PostBuilder> {
         if (!CommonUtils.isEmpty(key)) {
             this.bodyFile.put(key, fileBody);
         }
+
+        return this;
+    }
+
+    public PostBuilder contentType(ContentType contentType) {
+        this.contentType = contentType;
 
         return this;
     }

@@ -1,6 +1,8 @@
 package org.hothub.core;
 
 import okhttp3.*;
+import org.hothub.base.AppConstants;
+import org.hothub.base.ContentType;
 import org.hothub.pojo.FileBody;
 import org.hothub.utils.CommonUtils;
 
@@ -41,6 +43,7 @@ public class RequestHandler extends AbstractAttribute {
     }
 
 
+
     public boolean isUseSSL() {
         return !CommonUtils.isEmpty(this.url) && this.url.toLowerCase().startsWith("https");
     }
@@ -75,15 +78,6 @@ public class RequestHandler extends AbstractAttribute {
 
 
 
-
-
-
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private static final MediaType URLENCODE = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
-
-
-
-
     private RequestBody buildRequestBody() {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
@@ -92,7 +86,7 @@ public class RequestHandler extends AbstractAttribute {
             for (Map.Entry<String, String> stringStringEntry : bodyString.entrySet()) {
                 builder.addPart(
                         Headers.of("Content-Disposition", "form-data; name=\"" + stringStringEntry.getKey() + "\""),
-                        RequestBody.create(JSON, stringStringEntry.getValue()));
+                        RequestBody.create(ContentType.get(contentType), stringStringEntry.getValue()));
             }
         }
 

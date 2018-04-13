@@ -1,5 +1,6 @@
 package org.hothub.core;
 
+import org.hothub.base.ContentType;
 import org.hothub.pojo.FileBody;
 
 import java.util.Map;
@@ -15,6 +16,7 @@ public abstract class AbstractAttribute {
     protected Map<String, FileBody> bodyFile;
     protected boolean useCookie;
 
+    protected ContentType contentType;
     protected long readTimeOut;
     protected long writeTimeOut;
     protected long connTimeOut;

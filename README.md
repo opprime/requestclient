@@ -35,6 +35,7 @@
 ```
     ResultBody resultBody = RequestClient.get()
             .url("http://www.hothub.org")
+            .header("x-hader", "a header")
             .param("from", "github")
             .withCookie(true)
             .readTimeOut(10000)
@@ -49,6 +50,7 @@
 ```
     RequestClient.get()
             .url("http://www.hothub.org")
+            .header("x-hader", "a header")
             .param("from", "github")
             .withCookie(true)
             .readTimeOut(10000)
@@ -73,6 +75,7 @@
 ```
     ResultBody resultBody1 = RequestClient.post()
             .url("http://www.hothub.org/upload")
+            .header("x-hader", "a header")
             .body("code", "cm")
             .body("file", new FileBody("filename", new File("D:\\file\\hahaha.jpg")))
             .execute();
@@ -84,6 +87,7 @@
 ```
     RequestClient.post()
             .url("http://www.hothub.org/upload")
+            .header("x-hader", "a header")
             .body("code", "cm")
             .body("file", new FileBody("filename", new File("D:\\file\\hahaha.jpg")))
             .execute(new OnRequestListener() {
