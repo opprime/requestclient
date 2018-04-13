@@ -1,19 +1,20 @@
 # requestClient
 一个依赖于OkHttp3，用于JAVA服务端的网络请求框架。
 
+
 ## 使用方法
 >pom.xml引用
 ```
     <dependency>
         <groupId>org.hothub</groupId>
         <artifactId>requestclient</artifactId>
-        <version>1.0.0</version>
+        <version>1.02</version>
     </dependency>
 ```
 
 >gradle引用
 ```
-    compile 'org.hothub:requestclient:1.0.0'
+    compile 'org.hothub:requestclient:1.0.2'
 ```
 
 
@@ -76,6 +77,7 @@
     ResultBody resultBody1 = RequestClient.post()
             .url("http://www.hothub.org/upload")
             .header("x-hader", "a header")
+            .contentType(ContentType.URL_ENCODE)
             .body("code", "cm")
             .body("file", new FileBody("filename", new File("D:\\file\\hahaha.jpg")))
             .execute();
@@ -88,6 +90,7 @@
     RequestClient.post()
             .url("http://www.hothub.org/upload")
             .header("x-hader", "a header")
+            .contentType(ContentType.JSON)
             .body("code", "cm")
             .body("file", new FileBody("filename", new File("D:\\file\\hahaha.jpg")))
             .execute(new OnRequestListener() {
