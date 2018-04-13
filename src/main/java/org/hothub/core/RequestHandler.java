@@ -4,6 +4,8 @@ import okhttp3.*;
 import org.hothub.pojo.FileBody;
 import org.hothub.utils.CommonUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 public class RequestHandler extends AbstractAttribute {
@@ -35,7 +37,7 @@ public class RequestHandler extends AbstractAttribute {
         this.useCookie = abstractBuilder.useCookie;
 
 
-        builder.url(this.url);
+        builder.url(buildRequestParam());
     }
 
 
@@ -65,6 +67,9 @@ public class RequestHandler extends AbstractAttribute {
                 break;
         }
 
+
+        methodBuild = buildRequestHeader(methodBuild);
+
         return methodBuild == null ? null : methodBuild.build();
     }
 
@@ -74,47 +79,12 @@ public class RequestHandler extends AbstractAttribute {
 
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType URLENCODE = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
 
 
 
 
     private RequestBody buildRequestBody() {
-        switch (mAbstractBuilder.getRequestMethod()) {
-            case GET:
-                return buildGet();
-            case POST:
-            case PUT:
-            case DELETE:
-                return buildPost();
-            default:
-                break;
-        }
-
-        return null;
-    }
-
-
-
-
-
-
-
-    private RequestBody buildGet() {
-        FormBody.Builder builder = new FormBody.Builder();
-
-        //添加参数
-        if (params != null && !params.isEmpty()) {
-            for (Map.Entry<String, String> stringStringEntry : params.entrySet()) {
-                builder.add(stringStringEntry.getKey(), params.get(stringStringEntry.getValue()));
-            }
-        }
-
-        return builder.build();
-    }
-
-
-
-    private RequestBody buildPost() {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         //添加参数
@@ -157,6 +127,40 @@ public class RequestHandler extends AbstractAttribute {
     }
 
 
+
+    private String buildRequestParam() {
+        if (url == null || params == null || params.isEmpty()) {
+            return url;
+        }
+
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (Map.Entry<String, String> stringStringEntry : params.entrySet()) {
+                stringBuilder.append(String.format("&%s=%s", stringStringEntry.getKey(), URLEncoder.encode(stringStringEntry.getValue(), "utf-8")));
+            }
+
+            return url + (CommonUtils.isEmpty(stringBuilder) ? "" : url.lastIndexOf("?") > 0 ? stringBuilder : "?" + stringBuilder.substring(1));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+
+
+
+
+    private Request.Builder buildRequestHeader(Request.Builder builder) {
+        if (headers != null && !headers.isEmpty()) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.addHeader(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return builder;
+    }
 
 
 }
