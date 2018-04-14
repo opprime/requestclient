@@ -186,6 +186,10 @@
                 <version>1.6</version>
                 <configuration>
                     <skip>true</skip>
+                    <executable>gpg</executable>
+                    <!--<homedir>${gpg.homedir}</homedir>-->
+                    <keyname>292DFDCE</keyname>
+                    <passphrase>hothub.org</passphrase>
                 </configuration>
                 <executions>
                     <execution>
