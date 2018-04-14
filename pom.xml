@@ -125,6 +125,17 @@
                     <!--<encoding>UTF-8</encoding>-->
                 <!--</configuration>-->
             <!--</plugin>-->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
             <!-- java编译插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -189,10 +200,10 @@
                 <version>1.6</version>
                 <configuration>
                     <skip>true</skip>
-                    <executable>gpg</executable>
+                    <!--<executable>gpg</executable>-->
                     <!--<homedir>${gpg.homedir}</homedir>-->
-                    <keyname>292DFDCE</keyname>
-                    <passphrase>hothub.org</passphrase>
+                    <!--<keyname>292DFDCE</keyname>-->
+                    <!--<passphrase>hothub.org</passphrase>-->
                 </configuration>
                 <executions>
                     <execution>
