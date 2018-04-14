@@ -4,7 +4,7 @@
 
     <groupId>org.hothub</groupId>
     <artifactId>requestclient</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>requestclient</name>
     <url>http://hothub.org/</url>
@@ -80,7 +80,7 @@
         <url>git@github.com:opprime/requestclient.git</url>
         <connection>scm:git:git@github.com:opprime/requestclient.git</connection>
         <developerConnection>scm:git:git@github.com:opprime/requestclient.git</developerConnection>
-        <tag>requestclient-1.0.5</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
