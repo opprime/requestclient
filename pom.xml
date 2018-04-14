@@ -66,9 +66,14 @@
     </licenses>
 
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
+        <!--<groupId>org.sonatype.oss</groupId>-->
+        <!--<artifactId>oss-parent</artifactId>-->
+        <!--<version>9</version>-->
+
+            <groupId>cn.songxinqiang</groupId>
+            <artifactId>oss-parent</artifactId>
+            <version>2.0.0</version>
+
     </parent>
 
     <scm>
