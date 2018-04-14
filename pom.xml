@@ -4,7 +4,7 @@
 
     <groupId>org.hothub</groupId>
     <artifactId>requestclient</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>requestclient</name>
     <url>http://hothub.org/</url>
@@ -72,10 +72,10 @@
     </parent>
 
     <scm>
+        <url>git@github.com:opprime/requestclient.git</url>
         <connection>scm:git:git@github.com:opprime/requestclient.git</connection>
         <developerConnection>scm:git:git@github.com:opprime/requestclient.git</developerConnection>
-        <url>git@github.com:opprime/requestclient.git</url>
-        <tag>1.0.5</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
@@ -109,14 +109,14 @@
 
         <plugins>
             <!-- 资源文件拷贝插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-resources-plugin</artifactId>-->
+                <!--<version>2.7</version>-->
+                <!--<configuration>-->
+                    <!--<encoding>UTF-8</encoding>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
             <!-- java编译插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -132,11 +132,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.1</version>
-                <configuration>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                <!--<configuration>-->
+                    <!--<tagNameFormat>@{project.version}</tagNameFormat>-->
+                    <!--<autoVersionSubmodules>true</autoVersionSubmodules>-->
                     <!--<pushChanges>false</pushChanges>-->
-                </configuration>
+                <!--</configuration>-->
             </plugin>
             <plugin>
                 <!-- Source -->
@@ -199,6 +199,11 @@
                 <version>2.12.4</version>
                 <configuration>
                     <skip>true</skip>
+                    <environmentVariables>
+                        <NAME>value</NAME>
+                        <HOME>${env.JAVA_HOME}</HOME>
+                        <PATH>${env.PATH}</PATH>
+                    </environmentVariables>
                 </configuration>
                 <!--<configuration>-->
                     <!--<environmentVariables>-->
