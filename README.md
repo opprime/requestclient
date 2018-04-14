@@ -8,7 +8,7 @@
     <dependency>
         <groupId>org.hothub</groupId>
         <artifactId>requestclient</artifactId>
-        <version>1.02</version>
+        <version>1.0.2</version>
     </dependency>
 ```
 
@@ -26,7 +26,7 @@
 * PATCH请求（同步+异步）
 * PUT请求（同步+异步）
 * 返回结果可转String、byte、Stream、Reader、File
-* 支持session的保持
+* 支持Cookie的保持
 * 支持自签名网站https的访问，提供方法设置下证书就行
 
 
