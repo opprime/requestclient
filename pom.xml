@@ -109,6 +109,9 @@
     </distributionManagement>
 
 
+<profiles>
+        <profile>
+            <id>release</id>
     <build>
         <!--<pluginManagement>-->
 
@@ -225,5 +228,8 @@
         <!--</pluginManagement>-->
 
     </build>
+
+        </profile>
+        </profiles>
 
 </project>
