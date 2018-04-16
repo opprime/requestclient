@@ -1,5 +1,5 @@
 # requestClient
-一个依赖于OkHttp3，用于JAVA服务端的网络请求框架。
+一个基于OkHttp3，用于JAVA服务端的网络请求框架。
 
 
 ## 使用方法
@@ -8,13 +8,13 @@
     <dependency>
         <groupId>org.hothub</groupId>
         <artifactId>requestclient</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.6</version>
     </dependency>
 ```
 
 >gradle引用
 ```
-    compile 'org.hothub:requestclient:1.0.2'
+    compile 'org.hothub:requestclient:1.0.6'
 ```
 
 
