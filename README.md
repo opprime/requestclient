@@ -1,5 +1,10 @@
-# requestClient
-一个基于OkHttp3，用于JAVA服务端的网络请求框架。
+# 一个基于OkHttp3，用于JAVA服务端的HTTP网络请求框架。
+
+
+![maven](https://img.shields.io/maven-central/v/org.hothub/requestclient.svg)
+![license](https://img.shields.io/github/license/opprime/requestclient.svg)
+
+
 
 
 ## 使用方法
@@ -79,7 +84,7 @@
             .header("x-hader", "a header")
             .contentType(ContentType.URL_ENCODE)
             .body("code", "cm")
-            .body("file", new FileBody("filename", new File("D:\\file\\hahaha.jpg")))
+            .body("file", new FileBody("filename", new File("D:\\file\\requestclient.jpg")))
             .execute();
 ```
 
@@ -92,7 +97,7 @@
             .header("x-hader", "a header")
             .contentType(ContentType.JSON)
             .body("code", "cm")
-            .body("file", new FileBody("filename", new File("D:\\file\\hahaha.jpg")))
+            .body("file", new FileBody("filename", new File("D:\\file\\requestclient.jpg")))
             .execute(new OnRequestListener() {
                 @Override
                 public void onSuccess(String response) {
