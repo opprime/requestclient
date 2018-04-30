@@ -3,14 +3,20 @@ package org.hothub.core;
 import okhttp3.*;
 import org.hothub.base.AppConstants;
 import org.hothub.base.ContentType;
+import org.hothub.cookie.CookieManager;
+import org.hothub.core.ssl.SSLManager;
+import org.hothub.manager.ContextManager;
 import org.hothub.pojo.FileBody;
-import org.hothub.utils.CommonUtils;
+import org.hothub.utils.RequestClientUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-public class RequestHandler extends AbstractAttribute {
+public class RequestBuild extends AbstractAttribute {
 
 
     private AbstractBuilder mAbstractBuilder;
@@ -18,12 +24,12 @@ public class RequestHandler extends AbstractAttribute {
     private Request.Builder builder = new Request.Builder();
 
 
-    public RequestHandler(AbstractBuilder abstractBuilder) {
+    public RequestBuild(AbstractBuilder abstractBuilder) {
         if (abstractBuilder == null) {
             throw new IllegalArgumentException("builder is must not null");
         }
 
-        if (CommonUtils.isEmpty(abstractBuilder.url)) {
+        if (RequestClientUtils.isEmpty(abstractBuilder.url)) {
             throw new IllegalArgumentException("request url is must not null");
         }
 
@@ -44,9 +50,6 @@ public class RequestHandler extends AbstractAttribute {
 
 
 
-    public boolean isUseSSL() {
-        return !CommonUtils.isEmpty(this.url) && this.url.toLowerCase().startsWith("https");
-    }
 
 
 
@@ -72,6 +75,7 @@ public class RequestHandler extends AbstractAttribute {
 
 
         methodBuild = buildRequestHeader(methodBuild);
+        buildRequestCookie();
 
         return methodBuild == null ? null : methodBuild.build();
     }
@@ -101,7 +105,7 @@ public class RequestHandler extends AbstractAttribute {
                     builder.addFormDataPart(
                             fileBody.getKey(),
                             fileBody.getFileName(),
-                            RequestBody.create(MediaType.parse(CommonUtils.guessMimeType(fileBody.getFileName())), fileBody.getFile())
+                            RequestBody.create(MediaType.parse(RequestClientUtils.guessMimeType(fileBody.getFileName())), fileBody.getFile())
                     );
 
                     continue;
@@ -111,7 +115,7 @@ public class RequestHandler extends AbstractAttribute {
                     builder.addFormDataPart(
                             fileBody.getKey(),
                             fileBody.getFileName(),
-                            RequestBody.create(MediaType.parse(CommonUtils.guessMimeType(fileBody.getFileName())), fileBody.getFileByte())
+                            RequestBody.create(MediaType.parse(RequestClientUtils.guessMimeType(fileBody.getFileName())), fileBody.getFileByte())
                     );
                 }
             }
@@ -134,7 +138,7 @@ public class RequestHandler extends AbstractAttribute {
                 stringBuilder.append(String.format("&%s=%s", stringStringEntry.getKey(), URLEncoder.encode(stringStringEntry.getValue(), "utf-8")));
             }
 
-            return url + (CommonUtils.isEmpty(stringBuilder) ? "" : url.lastIndexOf("?") > 0 ? stringBuilder : "?" + stringBuilder.substring(1));
+            return url + (RequestClientUtils.isEmpty(stringBuilder) ? "" : url.lastIndexOf("?") > 0 ? stringBuilder : "?" + stringBuilder.substring(1));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -157,4 +161,72 @@ public class RequestHandler extends AbstractAttribute {
     }
 
 
+
+
+
+    @SuppressWarnings("unchecked")
+    private void buildRequestCookie() {
+        if (this.cookies != null && !this.cookies.isEmpty()) {
+            HttpUrl httpUrl = HttpUrl.parse(this.url);
+            if (httpUrl == null) {
+                return;
+            }
+            List<Cookie> originCookie = ContextManager.get(httpUrl.host(), List.class);
+            if (originCookie == null) {
+                originCookie = new ArrayList<>();
+            }
+
+            for (Map.Entry<String, String> entry : this.cookies.entrySet()) {
+                originCookie.add(new Cookie.Builder().name(entry.getKey()).value(entry.getValue()).domain(httpUrl.host()).build());
+            }
+
+            ContextManager.set(httpUrl.host(), originCookie);
+        }
+    }
+
+
+
+
+    public OkHttpClient getOkHttpClient() {
+        return getOkHttpBuild().build();
+    }
+
+    private List<Cookie> getRequestCookie() {
+        HttpUrl httpUrl = HttpUrl.parse(url);
+
+        return httpUrl != null ? ContextManager.get(httpUrl.host(), List.class) : null;
+    }
+
+    public List<Cookie> getResponseCookie() {
+        HttpUrl httpUrl = HttpUrl.parse(url);
+
+        return httpUrl != null ? ContextManager.get(httpUrl.host(), List.class) : null;
+    }
+
+    private OkHttpClient.Builder getOkHttpBuild() {
+        readTimeOut = readTimeOut > 0 ? readTimeOut : AppConstants.DEFAULT_MILLISECONDS;
+        writeTimeOut = writeTimeOut > 0 ? writeTimeOut : AppConstants.DEFAULT_MILLISECONDS;
+        connTimeOut = connTimeOut > 0 ? connTimeOut : AppConstants.DEFAULT_MILLISECONDS;
+
+        OkHttpClient.Builder okHttpClientBuild = new OkHttpClient.Builder()
+                .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
+                .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
+                .connectTimeout(connTimeOut, TimeUnit.MILLISECONDS);         //连接超时时间
+
+        if (this.useCookie) {
+            okHttpClientBuild.cookieJar(new CookieManager(getRequestCookie()));
+        }
+
+        if (!isUseSSL()) {
+            return okHttpClientBuild;
+        }
+
+        return okHttpClientBuild
+                .sslSocketFactory(SSLManager.createSSLSocketFactory(), new SSLManager.TrustAllCerts())
+                .hostnameVerifier(new SSLManager.TrustAllHostnameVerifier());
+    }
+
+    private boolean isUseSSL() {
+        return !RequestClientUtils.isEmpty(this.url) && this.url.toLowerCase().startsWith("https");
+    }
 }

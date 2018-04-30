@@ -80,6 +80,21 @@ public class ContextManager {
 
 
     /**
+     * 移除某个属性名及其值.
+     *
+     * @param key   属性名称
+     */
+    public static void remove(String key) {
+        Map<String, Object> map = MANAGER_MAP.get();
+
+        map.remove(key);
+
+        MANAGER_MAP.set(map);
+    }
+
+
+
+    /**
      * 清除当前线程中保存的值
      * */
     public static void remove() {

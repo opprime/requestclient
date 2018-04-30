@@ -1,6 +1,6 @@
 package org.hothub.pojo;
 
-import org.hothub.utils.CommonUtils;
+import org.hothub.utils.RequestClientUtils;
 
 import java.io.File;
 import java.io.Serializable;
@@ -20,13 +20,13 @@ public class FileBody implements Serializable {
 
 
     public FileBody(String fileName, File file) {
-        this.key = CommonUtils.getUUID();
+        this.key = RequestClientUtils.getUUID();
         this.fileName = fileName;
         this.file = file;
     }
 
     public FileBody(String fileName, byte[] bytes) {
-        this.key = CommonUtils.getUUID();
+        this.key = RequestClientUtils.getUUID();
         this.fileName = fileName;
         this.fileByte = bytes;
     }

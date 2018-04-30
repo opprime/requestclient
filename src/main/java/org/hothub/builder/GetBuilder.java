@@ -2,7 +2,7 @@ package org.hothub.builder;
 
 import org.hothub.base.RequestMethod;
 import org.hothub.core.AbstractBuilder;
-import org.hothub.utils.CommonUtils;
+import org.hothub.utils.RequestClientUtils;
 
 import java.util.LinkedHashMap;
 
@@ -14,7 +14,7 @@ public class GetBuilder extends AbstractBuilder<GetBuilder> {
             this.params = new LinkedHashMap<>();
         }
 
-        if (!CommonUtils.isEmpty(key)) {
+        if (!RequestClientUtils.isEmpty(key)) {
             this.params.put(key, value);
         }
 

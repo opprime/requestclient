@@ -28,24 +28,12 @@
             <type>pom</type>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.hamcrest</groupId>-->
-            <!--<artifactId>hamcrest-core</artifactId>-->
-            <!--<version>1.3</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.slf4j</groupId>-->
-            <!--<artifactId>log4j-over-slf4j</artifactId>-->
-            <!--<version>${slf4j.version}</version>-->
-        <!--</dependency>-->
-
-
 
         <!--OKHTTP3-->
         <dependency>
@@ -69,11 +57,6 @@
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>8</version>
-
-            <!--<groupId>cn.songxinqiang</groupId>-->
-            <!--<artifactId>oss-parent</artifactId>-->
-            <!--<version>2.0.0</version>-->
-
     </parent>
 
     <scm>
@@ -109,34 +92,8 @@
     </distributionManagement>
 
 
-<!--<profiles>-->
-        <!--<profile>-->
-            <!--<id>release</id>-->
     <build>
-        <!--<pluginManagement>-->
-
         <plugins>
-            <!-- 资源文件拷贝插件 -->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-resources-plugin</artifactId>-->
-                <!--<version>2.7</version>-->
-                <!--<configuration>-->
-                    <!--<encoding>UTF-8</encoding>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-                <!--<groupId>org.sonatype.plugins</groupId>-->
-                <!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
-                <!--<version>1.6.8</version>-->
-                <!--<extensions>true</extensions>-->
-                <!--<configuration>-->
-                    
-                    <!--<serverId>sonatype-oss-release</serverId>-->
-                    <!--<nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
-                    <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
             <!-- java编译插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -152,17 +109,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
-                <!--<configuration>-->
-                    <!--<autoVersionSubmodules>true</autoVersionSubmodules>-->
-                    <!--<useReleaseProfile>false</useReleaseProfile>-->
-                    <!--<releaseProfiles>release</releaseProfiles>-->
-                    <!--<goals>deploy</goals>-->
-                <!--</configuration>-->
-                <!--<configuration>-->
-                    <!--<tagNameFormat>@{project.version}</tagNameFormat>-->
-                    <!--<autoVersionSubmodules>true</autoVersionSubmodules>-->
-                    <!--<pushChanges>false</pushChanges>-->
-                <!--</configuration>-->
             </plugin>
             <plugin>
                 <!-- Source -->
@@ -205,13 +151,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
-                <!--<configuration>-->
-                    <!--<skip>true</skip>-->
-                    <!--<executable>gpg</executable>-->
-                    <!--<homedir>${gpg.homedir}</homedir>-->
-                    <!--<keyname>292DFDCE</keyname>-->
-                    <!--<passphrase>hothub.org</passphrase>-->
-                <!--</configuration>-->
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -235,19 +174,10 @@
                         <PATH>${env.PATH}</PATH>
                     </environmentVariables>
                 </configuration>
-                <!--<configuration>-->
-                    <!--<environmentVariables>-->
-                        <!--<LD_LIBRARY_PATH>/usr/local/lib</LD_LIBRARY_PATH>-->
-                    <!--</environmentVariables>-->
-                <!--</configuration>-->
             </plugin>
 
         </plugins>
-        <!--</pluginManagement>-->
-
     </build>
 
-        <!--</profile>-->
-        <!--</profiles>-->
 
 </project>

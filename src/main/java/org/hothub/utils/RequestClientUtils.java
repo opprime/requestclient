@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Created by hothub on 2018/02/20.
  */
-public class CommonUtils {
+public class RequestClientUtils {
 
     /**
      * 获取UUID

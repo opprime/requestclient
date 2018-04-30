@@ -1,22 +1,23 @@
 package org.hothub.response;
 
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import okhttp3.*;
 
 import java.io.*;
+import java.util.List;
 
 public class ResultBody {
 
     private Request request;
     private Response response;
     private ResponseBody responseBody;
+    private List<Cookie> cookieList;
 
 
-    public ResultBody(Request request, Response response) {
+    public ResultBody(Request request, Response response, List<Cookie> cookieList) {
         this.request = request;
         this.response = response;
         this.responseBody = response != null ? response.body() : null;
+        this.cookieList = cookieList;
     }
 
 
@@ -84,6 +85,7 @@ public class ResultBody {
                     fos.close();
                 }
             } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
@@ -113,4 +115,11 @@ public class ResultBody {
     public Response getResponse() {
         return response;
     }
+
+
+
+    public List<Cookie> getCookie() {
+        return cookieList;
+    }
+
 }

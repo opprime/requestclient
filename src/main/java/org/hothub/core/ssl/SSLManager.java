@@ -1,4 +1,4 @@
-package org.hothub.http;
+package org.hothub.core.ssl;
 
 import javax.net.ssl.*;
 import java.security.SecureRandom;
@@ -6,7 +6,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 /**
- * Created by opprime on 2018/03/02.
+ * Created by org.hothub on 2018/03/02.
  */
 public class SSLManager {
 

@@ -1,8 +1,10 @@
 package org.hothub.core;
 
-import org.hothub.utils.CommonUtils;
+import okhttp3.Cookie;
+import org.hothub.utils.RequestClientUtils;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 @SuppressWarnings("unchecked")
 public abstract class AbstractBuilderChain<T> extends AbstractAttribute {
@@ -30,7 +32,7 @@ public abstract class AbstractBuilderChain<T> extends AbstractAttribute {
             this.headers = new LinkedHashMap<>();
         }
 
-        if (!CommonUtils.isEmpty(key)) {
+        if (!RequestClientUtils.isEmpty(key)) {
             this.headers.put(key, value);
         }
 
@@ -42,8 +44,26 @@ public abstract class AbstractBuilderChain<T> extends AbstractAttribute {
             this.cookies = new LinkedHashMap<>();
         }
 
-        if (!CommonUtils.isEmpty(key)) {
+        if (!RequestClientUtils.isEmpty(key)) {
             this.cookies.put(key, value);
+        }
+
+        return (T) this;
+    }
+
+    public T cookie(List<Cookie> cookieList) {
+        if (this.cookies == null) {
+            this.cookies = new LinkedHashMap<>();
+        }
+
+        if (cookieList != null && !cookieList.isEmpty()) {
+            for (Cookie item : cookieList) {
+                if (RequestClientUtils.isEmpty(item.name())) {
+                    continue;
+                }
+
+                this.cookies.put(item.name(), item.value());
+            }
         }
 
         return (T) this;

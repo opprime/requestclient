@@ -1,7 +1,7 @@
 package org.hothub.base;
 
 import okhttp3.MediaType;
-import org.hothub.utils.CommonUtils;
+import org.hothub.utils.RequestClientUtils;
 
 import java.nio.charset.Charset;
 
@@ -42,7 +42,7 @@ public enum  ContentType {
         String mediaType =
                 (contentType == null ? ContentType.URL_ENCODE.type : contentType.type)
                         + "; charset="
-                        + Charset.forName(CommonUtils.isEmpty(charset) ? "utf-8" : charset);
+                        + Charset.forName(RequestClientUtils.isEmpty(charset) ? "utf-8" : charset);
 
         return MediaType.parse(mediaType.toLowerCase());
     }

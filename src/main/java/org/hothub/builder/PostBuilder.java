@@ -4,7 +4,7 @@ import org.hothub.base.ContentType;
 import org.hothub.base.RequestMethod;
 import org.hothub.core.AbstractBuilder;
 import org.hothub.pojo.FileBody;
-import org.hothub.utils.CommonUtils;
+import org.hothub.utils.RequestClientUtils;
 
 import java.util.LinkedHashMap;
 
@@ -16,7 +16,7 @@ public class PostBuilder extends AbstractBuilder<PostBuilder> {
             this.bodyString = new LinkedHashMap<>();
         }
 
-        if (!CommonUtils.isEmpty(key)) {
+        if (!RequestClientUtils.isEmpty(key)) {
             this.bodyString.put(key, value);
         }
 
@@ -28,7 +28,7 @@ public class PostBuilder extends AbstractBuilder<PostBuilder> {
             this.bodyFile = new LinkedHashMap<>();
         }
 
-        if (!CommonUtils.isEmpty(key)) {
+        if (!RequestClientUtils.isEmpty(key)) {
             this.bodyFile.put(key, fileBody);
         }
 
