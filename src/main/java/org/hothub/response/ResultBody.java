@@ -5,7 +5,6 @@ import org.hothub.utils.RequestClientUtils;
 
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 
 public class ResultBody {
 
@@ -14,7 +13,11 @@ public class ResultBody {
     private ResponseBody responseBody;
     private List<Cookie> cookieList;
 
-    private ResultHolderData resultHolderData;
+    private String string;
+    private byte[] bytes;
+    private File file;
+    private InputStream stream;
+    private Reader reader;
 
 
 
@@ -24,7 +27,11 @@ public class ResultBody {
         this.responseBody = response != null ? response.body() : null;
         this.cookieList = cookieList;
 
-        resultHolderData = new ResultHolderData();
+        string = null;
+        bytes = null;
+        file = null;
+        stream = null;
+        reader = null;
     }
 
 
@@ -32,17 +39,17 @@ public class ResultBody {
     public String toString() {
         String result = null;
 
-        if (RequestClientUtils.isEmpty(resultHolderData.getString())) {
+        if (RequestClientUtils.isEmpty(string)) {
             try {
                 result = responseBody != null ? responseBody.string() : null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            resultHolderData.setString(result);
+            string = result;
         }
 
-        return resultHolderData.getString();
+        return string;
     }
 
 
@@ -50,17 +57,17 @@ public class ResultBody {
     public byte[] toByte() {
         byte[] result = null;
 
-        if (resultHolderData.getBytes() == null) {
+        if (bytes == null) {
             try {
                 result = responseBody != null ? responseBody.bytes() : null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            resultHolderData.setBytes(result);
+            bytes = result;
         }
 
-        return resultHolderData.getBytes();
+        return bytes;
     }
 
 
@@ -69,7 +76,7 @@ public class ResultBody {
     public File toFile(String fileDirectory, String fileName) {
         File result = null;
 
-        if (resultHolderData.getFile() == null) {
+        if (file == null) {
             InputStream inputStream = null;
             byte[] buf = new byte[2048];
             int len;
@@ -111,10 +118,10 @@ public class ResultBody {
                 }
             }
 
-            resultHolderData.setFile(result);
+            file = result;
         }
 
-        return resultHolderData.getFile();
+        return file;
     }
 
 
@@ -122,13 +129,13 @@ public class ResultBody {
     public InputStream toStream() {
         InputStream result;
 
-        if (resultHolderData.getStream() == null) {
+        if (stream == null) {
             result = responseBody != null ? responseBody.byteStream() : null;
 
-            resultHolderData.setStream(result);
+            stream = result;
         }
 
-        return resultHolderData.getStream();
+        return stream;
     }
 
 
@@ -136,13 +143,13 @@ public class ResultBody {
     public Reader toReader() {
         Reader result;
 
-        if (resultHolderData.getReader() == null) {
+        if (reader == null) {
             result = responseBody != null ? responseBody.charStream() : null;
 
-            resultHolderData.setReader(result);
+            reader = result;
         }
 
-        return resultHolderData.getReader();
+        return reader;
     }
 
 
