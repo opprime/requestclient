@@ -27,6 +27,7 @@ public abstract class AbstractBuilder<T extends AbstractBuilder> extends Abstrac
      * 同步，带返回值
      * */
     public ResultBody execute() {
+        logger.info("RequestClient start execute with synchronous.");
         RequestBuild requestBuild = new RequestBuild(this);
 
         Request request = requestBuild.buildRequest();
@@ -52,6 +53,7 @@ public abstract class AbstractBuilder<T extends AbstractBuilder> extends Abstrac
      * 异步，无返回值
      * */
     public void execute(OnRequestListener onRequestListener) {
+        logger.info("RequestClient start execute with asynchronous.");
         RequestBuild requestBuild = new RequestBuild(this);
 
         Request request = requestBuild.buildRequest();

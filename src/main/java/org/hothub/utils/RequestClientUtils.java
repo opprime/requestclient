@@ -47,6 +47,7 @@ public class RequestClientUtils {
                 tmp.append(Integer.toString(j, 16));
             }
         }
+
         return tmp.toString();
     }
 

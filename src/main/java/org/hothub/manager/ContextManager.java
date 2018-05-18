@@ -98,8 +98,6 @@ public class ContextManager {
      * 清除当前线程中保存的值
      * */
     public static void remove() {
-        logger.info("THREADLOCAL - REMOVE");
-
         MANAGER_MAP.remove();
     }
 

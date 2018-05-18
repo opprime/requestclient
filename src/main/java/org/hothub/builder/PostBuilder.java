@@ -7,8 +7,10 @@ import org.hothub.pojo.FileBody;
 import org.hothub.utils.RequestClientUtils;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class PostBuilder extends AbstractBuilder<PostBuilder> {
+
 
 
     public PostBuilder body(String key, String value) {
@@ -35,6 +37,16 @@ public class PostBuilder extends AbstractBuilder<PostBuilder> {
         return this;
     }
 
+    public PostBuilder body(Map<String, String> params) {
+        if (params != null && !params.isEmpty()) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                this.body(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return this;
+    }
+
     public PostBuilder contentType(ContentType contentType) {
         this.contentType = contentType;
 
@@ -47,4 +59,5 @@ public class PostBuilder extends AbstractBuilder<PostBuilder> {
     public RequestMethod getRequestMethod() {
         return RequestMethod.POST;
     }
+
 }
