@@ -1,9 +1,11 @@
 package org.hothub.response;
 
 import okhttp3.*;
+import org.hothub.utils.RequestClientUtils;
 
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 public class ResultBody {
 
@@ -12,96 +14,135 @@ public class ResultBody {
     private ResponseBody responseBody;
     private List<Cookie> cookieList;
 
+    private ResultHolderData resultHolderData;
+
+
 
     public ResultBody(Request request, Response response, List<Cookie> cookieList) {
         this.request = request;
         this.response = response;
         this.responseBody = response != null ? response.body() : null;
         this.cookieList = cookieList;
+
+        resultHolderData = new ResultHolderData();
     }
 
 
     @Override
     public String toString() {
-        try {
-            return responseBody != null ? responseBody.string() : null;
-        } catch (IOException e) {
-            e.printStackTrace();
+        String result = null;
+
+        if (RequestClientUtils.isEmpty(resultHolderData.getString())) {
+            try {
+                result = responseBody != null ? responseBody.string() : null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            resultHolderData.setString(result);
         }
 
-        return null;
+        return resultHolderData.getString();
     }
 
 
 
     public byte[] toByte() {
-        try {
-            return responseBody != null ? responseBody.bytes() : null;
-        } catch (IOException e) {
-            e.printStackTrace();
+        byte[] result = null;
+
+        if (resultHolderData.getBytes() == null) {
+            try {
+                result = responseBody != null ? responseBody.bytes() : null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            resultHolderData.setBytes(result);
         }
 
-        return null;
+        return resultHolderData.getBytes();
     }
 
 
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public File toFile(String fileDirectory, String fileName) {
-        InputStream inputStream = null;
-        byte[] buf = new byte[2048];
-        int len;
-        FileOutputStream fos = null;
+        File result = null;
 
-        try {
-            inputStream = toStream();
-            if (inputStream == null) {
-                return null;
-            }
+        if (resultHolderData.getFile() == null) {
+            InputStream inputStream = null;
+            byte[] buf = new byte[2048];
+            int len;
+            FileOutputStream fos = null;
 
-            File dir = new File(fileDirectory);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            File file = new File(dir, fileName);
-            fos = new FileOutputStream(file);
-            while ((len = inputStream.read(buf)) != -1) {
-                fos.write(buf, 0, len);
-            }
-            fos.flush();
-
-            return file;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
             try {
-                responseBody.close();
-                if (inputStream != null) {
-                    inputStream.close();
+                inputStream = toStream();
+                if (inputStream == null) {
+                    return null;
                 }
 
-                if (fos != null) {
-                    fos.close();
+                File dir = new File(fileDirectory);
+                if (!dir.exists()) {
+                    dir.mkdirs();
                 }
+
+                File file = new File(dir, fileName);
+                fos = new FileOutputStream(file);
+                while ((len = inputStream.read(buf)) != -1) {
+                    fos.write(buf, 0, len);
+                }
+                fos.flush();
+
+                result = file;
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    responseBody.close();
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+
+                    if (fos != null) {
+                        fos.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+
+            resultHolderData.setFile(result);
         }
 
-        return null;
+        return resultHolderData.getFile();
     }
 
 
 
     public InputStream toStream() {
-        return responseBody != null ? responseBody.byteStream() : null;
+        InputStream result;
+
+        if (resultHolderData.getStream() == null) {
+            result = responseBody != null ? responseBody.byteStream() : null;
+
+            resultHolderData.setStream(result);
+        }
+
+        return resultHolderData.getStream();
     }
 
 
 
     public Reader toReader() {
-        return responseBody != null ? responseBody.charStream() : null;
+        Reader result;
+
+        if (resultHolderData.getReader() == null) {
+            result = responseBody != null ? responseBody.charStream() : null;
+
+            resultHolderData.setReader(result);
+        }
+
+        return resultHolderData.getReader();
     }
 
 

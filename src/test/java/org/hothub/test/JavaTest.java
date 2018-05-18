@@ -2,6 +2,7 @@ package org.hothub.test;
 
 
 import org.hothub.RequestClient;
+import org.hothub.response.ResultBody;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,10 +14,19 @@ public class JavaTest {
         map.put("school_id", "aaa");
         map.put("school_name", "bbb");
 
-        System.out.println(RequestClient.post()
+        ResultBody resultBody = RequestClient.post()
                 .url("https://www.baidu.com")
                 .body(map)
-                .execute());
+                .execute();
+
+//        System.out.println(resultBody.toString());
+//        System.out.println(resultBody.toByte().length);
+//        System.out.println(resultBody.toString());
+
+//        resultBody.toFile("D:", "html.html");
+
+
+
 
     }
 }
