@@ -93,5 +93,19 @@ public abstract class AbstractBuilderChain<T> extends AbstractAttribute {
         return (T) this;
     }
 
+    public T followRedirect(boolean http, boolean https) {
+        this.followRedirects = http;
+        this.followSslRedirects = https;
+
+        return (T) this;
+    }
+
+    public T proxy(String proxyHost, Integer proxyPort) {
+        this.proxyHost = proxyHost;
+        this.proxyPort = proxyPort;
+
+        return (T) this;
+    }
+
 
 }

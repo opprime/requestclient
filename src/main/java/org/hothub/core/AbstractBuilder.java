@@ -3,13 +3,11 @@ package org.hothub.core;
 import okhttp3.*;
 import org.hothub.base.RequestMethod;
 import org.hothub.base.OnRequestListener;
-import org.hothub.manager.ContextManager;
 import org.hothub.response.ResultBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
 
 @SuppressWarnings("unchecked")
 public abstract class AbstractBuilder<T extends AbstractBuilder> extends AbstractBuilderChain<T> {
@@ -40,11 +38,7 @@ public abstract class AbstractBuilder<T extends AbstractBuilder> extends Abstrac
             e.printStackTrace();
         }
 
-
-        List<Cookie> cookieList = requestBuild.getResponseCookie();
-        ContextManager.remove();
-
-        return new ResultBody(request, response, cookieList);
+        return new ResultBody(request, response, url);
     }
 
 
@@ -62,10 +56,7 @@ public abstract class AbstractBuilder<T extends AbstractBuilder> extends Abstrac
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             private ResultBody getResultBody(Response response) {
-                List<Cookie> cookieList = requestBuild.getResponseCookie();
-                ContextManager.remove();
-
-                return new ResultBody(request, response, cookieList);
+                return new ResultBody(request, response, url);
             }
 
             @Override

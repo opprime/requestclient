@@ -1,17 +1,21 @@
 package org.hothub.response;
 
 import okhttp3.*;
+import org.hothub.manager.ContextManager;
 import org.hothub.utils.RequestClientUtils;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.List;
 
 public class ResultBody {
 
+    private HttpUrl httpUrl;
     private Request request;
     private Response response;
     private ResponseBody responseBody;
-    private List<Cookie> cookieList;
+    private List<Cookie> requestCookieList;
+    private List<Cookie> responseCookieList;
 
     private String string;
     private byte[] bytes;
@@ -21,17 +25,22 @@ public class ResultBody {
 
 
 
-    public ResultBody(Request request, Response response, List<Cookie> cookieList) {
+    public ResultBody(Request request, Response response, String requestUrl) {
         this.request = request;
         this.response = response;
+        this.httpUrl = HttpUrl.parse(requestUrl);
         this.responseBody = response != null ? response.body() : null;
-        this.cookieList = cookieList;
+        this.requestCookieList = request != null ? Cookie.parseAll(this.httpUrl, request.headers()) : Collections.EMPTY_LIST;
+        this.responseCookieList = response != null ? Cookie.parseAll(this.httpUrl, response.headers()) : Collections.EMPTY_LIST;
 
         string = null;
         bytes = null;
         file = null;
         stream = null;
         reader = null;
+
+        //清除线程本地变量
+        ContextManager.remove();
     }
 
 
@@ -166,8 +175,14 @@ public class ResultBody {
 
 
 
-    public List<Cookie> getCookie() {
-        return cookieList;
+    public List<Cookie> getRequestCookie() {
+        return requestCookieList;
+    }
+
+
+
+    public List<Cookie> getResponseCookie() {
+        return responseCookieList;
     }
 
 }

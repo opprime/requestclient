@@ -10,8 +10,11 @@ import org.hothub.pojo.FileBody;
 import org.hothub.utils.RequestClientUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +47,16 @@ public class RequestBuild extends AbstractAttribute {
         this.bodyFile = abstractBuilder.bodyFile;
         this.useCookie = abstractBuilder.useCookie;
 
+        this.contentType = abstractBuilder.contentType;
+        this.readTimeOut = abstractBuilder.readTimeOut;
+        this.writeTimeOut = abstractBuilder.writeTimeOut;
+        this.connTimeOut = abstractBuilder.connTimeOut;
+
+        this.followRedirects = abstractBuilder.followRedirects;
+        this.followSslRedirects = abstractBuilder.followSslRedirects;
+
+        this.proxyHost = abstractBuilder.proxyHost;
+        this.proxyPort = abstractBuilder.proxyPort;
 
         builder.url(buildRequestParam());
     }
@@ -83,18 +96,31 @@ public class RequestBuild extends AbstractAttribute {
 
 
     private RequestBody buildRequestBody() {
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-
-        //添加参数
-        if (bodyString != null && !bodyString.isEmpty()) {
-            for (Map.Entry<String, String> stringStringEntry : bodyString.entrySet()) {
-                builder.addPart(
-                        Headers.of("Content-Disposition", "form-data; name=\"" + stringStringEntry.getKey() + "\""),
-                        RequestBody.create(ContentType.get(contentType), stringStringEntry.getValue()));
+        //纯参数 或 JSON参数
+        if (bodyFile == null || bodyFile.isEmpty()) {
+            FormBody.Builder formBodyBuilder = new FormBody.Builder();
+            if (bodyString != null && !bodyString.isEmpty()) {
+                for (Map.Entry<String, String> stringStringEntry : bodyString.entrySet()) {
+                    formBodyBuilder.add(stringStringEntry.getKey(), stringStringEntry.getValue());
+                }
             }
-        }
 
-        if (bodyFile != null && !bodyFile.isEmpty()) {
+            return formBodyBuilder.build();
+        } else {
+            //混合参数
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+
+            //添加参数
+            if (bodyString != null && !bodyString.isEmpty()) {
+                for (Map.Entry<String, String> stringStringEntry : bodyString.entrySet()) {
+                    builder.addPart(
+                            Headers.of("Content-Disposition", "form-data; name=\"" + stringStringEntry.getKey() + "\""),
+                            RequestBody.create(ContentType.get(contentType), stringStringEntry.getValue())
+                    );
+                }
+            }
+
+
             for (Map.Entry<String, FileBody> stringFileBodyEntry : bodyFile.entrySet()) {
                 FileBody fileBody = stringFileBodyEntry.getValue();
                 if (fileBody == null) {
@@ -119,9 +145,10 @@ public class RequestBuild extends AbstractAttribute {
                     );
                 }
             }
-        }
 
-        return builder.build();
+
+            return builder.build();
+        }
     }
 
 
@@ -171,9 +198,10 @@ public class RequestBuild extends AbstractAttribute {
             if (httpUrl == null) {
                 return;
             }
-            List<Cookie> originCookie = ContextManager.get(httpUrl.host(), List.class);
+
+            LinkedHashSet<Cookie> originCookie = ContextManager.get(httpUrl.host(), LinkedHashSet.class);
             if (originCookie == null) {
-                originCookie = new ArrayList<>();
+                originCookie = new LinkedHashSet<>();
             }
 
             for (Map.Entry<String, String> entry : this.cookies.entrySet()) {
@@ -194,13 +222,17 @@ public class RequestBuild extends AbstractAttribute {
     private List<Cookie> getRequestCookie() {
         HttpUrl httpUrl = HttpUrl.parse(url);
 
-        return httpUrl != null ? ContextManager.get(httpUrl.host(), List.class) : null;
+        LinkedHashSet<Cookie> cookieSet = httpUrl != null ? ContextManager.get(httpUrl.host(), LinkedHashSet.class) : null;
+
+        return cookieSet == null ? null : new ArrayList<>(cookieSet);
     }
 
     public List<Cookie> getResponseCookie() {
         HttpUrl httpUrl = HttpUrl.parse(url);
 
-        return httpUrl != null ? ContextManager.get(httpUrl.host(), List.class) : null;
+        LinkedHashSet<Cookie> cookieSet = httpUrl != null ? ContextManager.get(httpUrl.host(), LinkedHashSet.class) : null;
+
+        return cookieSet == null ? null : new ArrayList<>(cookieSet);
     }
 
     private OkHttpClient.Builder getOkHttpBuild() {
@@ -209,9 +241,16 @@ public class RequestBuild extends AbstractAttribute {
         connTimeOut = connTimeOut > 0 ? connTimeOut : AppConstants.DEFAULT_MILLISECONDS;
 
         OkHttpClient.Builder okHttpClientBuild = new OkHttpClient.Builder()
+                .followRedirects(followRedirects)
+                .followSslRedirects(followSslRedirects)
                 .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
                 .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
                 .connectTimeout(connTimeOut, TimeUnit.MILLISECONDS);         //连接超时时间
+
+
+        if (!RequestClientUtils.isEmpty(proxyHost) && proxyPort != null && proxyPort > 0) {
+            okHttpClientBuild.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
+        }
 
         if (this.useCookie) {
             okHttpClientBuild.cookieJar(new CookieManager(getRequestCookie()));

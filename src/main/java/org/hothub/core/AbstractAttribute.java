@@ -21,5 +21,11 @@ public abstract class AbstractAttribute {
     protected long writeTimeOut;
     protected long connTimeOut;
 
+    protected boolean followRedirects = true;
+    protected boolean followSslRedirects = true;
+
+    protected String proxyHost;
+    protected Integer proxyPort;
+
 
 }
