@@ -65,6 +65,11 @@ public class FileBody implements Serializable {
         this.fileByte = fileByte;
     }
 
+    public boolean isEmpty() {
+        return fileByte == null && file == null;
+    }
+
+
 
     @Override
     public String toString() {

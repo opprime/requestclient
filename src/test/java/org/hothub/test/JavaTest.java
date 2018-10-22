@@ -5,8 +5,10 @@ import okhttp3.Cookie;
 import okhttp3.HttpUrl;
 import org.hothub.RequestClient;
 import org.hothub.base.ContentType;
+import org.hothub.pojo.FileBody;
 import org.hothub.response.ResultBody;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -17,14 +19,14 @@ public class JavaTest {
 
     public static void main(String[] args) {
 
-
-        String username = "cybbysyey";
-        String password = "147852369";           //147852369
-
-        String passwordMd5 = JavaTest.toMd5("r4QD4vG9" + password);
-        String cookieToken = "";
-
-        System.out.println(passwordMd5);
+//
+//        String username = "cybbysyey";
+//        String password = "147852369";           //147852369
+//
+//        String passwordMd5 = JavaTest.toMd5("r4QD4vG9" + password);
+//        String cookieToken = "";
+//
+//        System.out.println(passwordMd5);
 //        ResultBody getResult = RequestClient.get()
 //                .url("http://youeryuan.yinglets.com/eagles-ibaby/kindergarten/login.do")
 ////                .withCookie(false)
@@ -44,15 +46,17 @@ public class JavaTest {
 //                Cookie cookie = cookieList.get(0);
 //        System.out.println(cookie.value());
 
-        System.out.println("------------ post result ----------------");
-
-        ResultBody postResult = RequestClient.post()
-                .url("http://youeryuan.yinglets.com/eagles-ibaby/kindergarten/login.do")//?username=" + username + "&password=" + passwordMd5)
-                .body("username", username)
-                .body("password", passwordMd5)
-                .body("captcha", "")
-                .followRedirect(false, false)
-                .proxy("192.168.10.107", 8888)
+//        System.out.println("------------ post result ----------------");
+//
+//        ResultBody postResult = RequestClient.post()
+//                .url("https://ecommerce.ufc.ge:18443/ecomm2/MerchantHandler")//?username=" + username + "&password=" + passwordMd5)
+//                .body("username", username)
+//                .body("password", passwordMd5)
+//                .body("captcha", "")
+////                .followRedirect(false, false)
+////                .proxy("192.168.10.107", 8888)
+//                .certificate(new FileBody("file", new File("E:/cer/cer.cer")))
+//                .certificate(new FileBody("file", new File("E:/cer/p12.p12")))
 //                .withCookie(false)
 //                .cookie("SHAREJSESSIONID", cookieToken)
 //                        .cookie("ibabyuser", "cybbysyey@@" + CommonUtils.toMd5("r4QD4vG9" + "147852369"))
@@ -63,37 +67,37 @@ public class JavaTest {
 //                .header("Referer", "http://youeryuan.yinglets.com/eagles-ibaby/kindergarten/login.do")//;JSESSIONID="+cookieToken)
 //                .header("Origin", "http://youeryuan.yinglets.com")
 //                .header("Host", "youeryuan.yinglets.com")
-                .header("Accept", "*/*")
-                .header("Accept-Encoding", "gzip, deflate")
-                .header("Accept-Language", "zh-CN,zh;q=0.9")
+//                .header("Accept", "*/*")
+//                .header("Accept-Encoding", "gzip, deflate")
+//                .header("Accept-Language", "zh-CN,zh;q=0.9")
 //                .header("Cookie", "SHAREJSESSIONID=" + cookieToken)// + "; ibabyuser=cybbysyey@@" + passwordMd5)
 //                .contentType(ContentType.URL_ENCODE)
-                .execute();
-
-        System.out.println("------------ post result - REQUEST - HEADERS ----------------");
-
-        System.out.println(postResult.getRequest().headers());
-
-        System.out.println("------------ post result - RESPONSE - HEADERS ----------------");
-
-        System.out.println(postResult.getResponse().headers());
-
-        System.out.println("------------ post result - RESPONSE - COOKIE----------------");
-
-        System.out.println(postResult.getRequestCookie());
-        System.out.println(postResult.getResponseCookie());
-        List<Cookie> cookieList = Cookie.parseAll(HttpUrl.parse("http://youeryuan.yinglets.com"), postResult.getResponse().headers());
-        System.out.println(cookieList);
-
-        cookieToken = postResult.getResponseCookie().get(0).value();
-
-//        cookieToken = cookieList.get(0).value();
-
-        System.out.println("------------ post result - STRING----------------");
-
-        System.out.println(postResult);
-
-        System.out.println("------------ post result - STRING - END ----------------");
+//                .execute();
+//
+//        System.out.println("------------ post result - REQUEST - HEADERS ----------------");
+//
+//        System.out.println(postResult.getRequest().headers());
+//
+//        System.out.println("------------ post result - RESPONSE - HEADERS ----------------");
+//
+//        System.out.println(postResult.getResponse().headers());
+//
+//        System.out.println("------------ post result - RESPONSE - COOKIE----------------");
+//
+//        System.out.println(postResult.getRequestCookie());
+//        System.out.println(postResult.getResponseCookie());
+//        List<Cookie> cookieList = Cookie.parseAll(HttpUrl.parse("http://youeryuan.yinglets.com"), postResult.getResponse().headers());
+//        System.out.println(cookieList);
+//
+//        cookieToken = postResult.getResponseCookie().get(0).value();
+//
+////        cookieToken = cookieList.get(0).value();
+//
+//        System.out.println("------------ post result - STRING----------------");
+//
+//        System.out.println(postResult);
+//
+//        System.out.println("------------ post result - STRING - END ----------------");
 
 //cookieToken = postResult.getResponse().headers().get(0).value();
 
@@ -135,14 +139,14 @@ public class JavaTest {
 //                .param("parentId", "107c52e3445f4e629652ea5cd6466c59")
 //                .execute());
 
-        System.out.println("cookieToken = " + cookieToken);
-
-        System.out.println(RequestClient.post()
-                .url("http://appapi.baby.dev.yinglets.com/alisports/v150/oauth/token/assistant")
-                .body("token", cookieToken)
-//                .body("token", "f28a9c06-37de-4693-ab50-544dd6b0fb79")
-//                .body("token", "b66e7510-9263-4d52-8db7-8a16c44ca586")
-                .execute());
+//        System.out.println("cookieToken = " + cookieToken);
+//
+//        System.out.println(RequestClient.post()
+//                .url("http://appapi.baby.dev.yinglets.com/alisports/v150/oauth/token/assistant")
+//                .body("token", cookieToken)
+////                .body("token", "f28a9c06-37de-4693-ab50-544dd6b0fb79")
+////                .body("token", "b66e7510-9263-4d52-8db7-8a16c44ca586")
+//                .execute());
 
 
 //        Map<String, String> map = new HashMap<>();

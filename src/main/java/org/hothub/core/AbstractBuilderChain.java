@@ -1,6 +1,7 @@
 package org.hothub.core;
 
 import okhttp3.Cookie;
+import org.hothub.pojo.FileBody;
 import org.hothub.utils.RequestClientUtils;
 
 import java.util.LinkedHashMap;
@@ -103,6 +104,12 @@ public abstract class AbstractBuilderChain<T> extends AbstractAttribute {
     public T proxy(String proxyHost, Integer proxyPort) {
         this.proxyHost = proxyHost;
         this.proxyPort = proxyPort;
+
+        return (T) this;
+    }
+
+    public T certificate(FileBody certificate) {
+        this.certificate = certificate;
 
         return (T) this;
     }

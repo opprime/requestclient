@@ -14,7 +14,7 @@ public abstract class AbstractAttribute {
     protected Map<String, String> cookies;
     protected Map<String, String> bodyString;
     protected Map<String, FileBody> bodyFile;
-    protected boolean useCookie = true;
+    protected boolean useCookie = false;
 
     protected ContentType contentType;
     protected long readTimeOut;
@@ -26,6 +26,8 @@ public abstract class AbstractAttribute {
 
     protected String proxyHost;
     protected Integer proxyPort;
+
+    protected FileBody certificate;
 
 
 }

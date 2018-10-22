@@ -58,11 +58,10 @@ public class RequestBuild extends AbstractAttribute {
         this.proxyHost = abstractBuilder.proxyHost;
         this.proxyPort = abstractBuilder.proxyPort;
 
+        this.certificate = abstractBuilder.certificate;
+
         builder.url(buildRequestParam());
     }
-
-
-
 
 
 
@@ -215,8 +214,9 @@ public class RequestBuild extends AbstractAttribute {
 
 
 
+
     public OkHttpClient getOkHttpClient() {
-        return getOkHttpBuild().build();
+        return configOkHttpClient(getInstance());
     }
 
     private List<Cookie> getRequestCookie() {
@@ -235,35 +235,77 @@ public class RequestBuild extends AbstractAttribute {
         return cookieSet == null ? null : new ArrayList<>(cookieSet);
     }
 
-    private OkHttpClient.Builder getOkHttpBuild() {
-        readTimeOut = readTimeOut > 0 ? readTimeOut : AppConstants.DEFAULT_MILLISECONDS;
-        writeTimeOut = writeTimeOut > 0 ? writeTimeOut : AppConstants.DEFAULT_MILLISECONDS;
-        connTimeOut = connTimeOut > 0 ? connTimeOut : AppConstants.DEFAULT_MILLISECONDS;
 
-        OkHttpClient.Builder okHttpClientBuild = new OkHttpClient.Builder()
+    //OkhttpClient单例
+    public static OkHttpClient getInstance() {
+        return OkhttpClientInstance.okHttpClient;
+    }
+
+
+    private static class OkhttpClientInstance {
+        private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .followSslRedirects(true)
+                .followRedirects(true)
+                .readTimeout(AppConstants.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .writeTimeout(AppConstants.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .connectTimeout(AppConstants.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .build();
+    }
+
+
+    private OkHttpClient configOkHttpClient(OkHttpClient okHttpClient) {
+        //使用默认配置时，直接返回
+        if (this.readTimeOut <= 0 && this.writeTimeOut <= 0 && this.connTimeOut <= 0
+                && !followRedirects && !followSslRedirects
+                && !this.useCookie
+                && !isUseSSL()
+                && RequestClientUtils.isEmpty(proxyHost)
+                && !this.useCookie) {
+            return okHttpClient;
+        }
+
+
+        //有自定义配置 newBuilder
+        OkHttpClient.Builder okhttpClientBuilder = okHttpClient.newBuilder();
+
+        okhttpClientBuilder
                 .followRedirects(followRedirects)
                 .followSslRedirects(followSslRedirects)
-                .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
-                .writeTimeout(writeTimeOut, TimeUnit.MILLISECONDS)
-                .connectTimeout(connTimeOut, TimeUnit.MILLISECONDS);         //连接超时时间
+                .readTimeout(this.readTimeOut > 0 ? this.readTimeOut : AppConstants.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .writeTimeout(this.writeTimeOut > 0 ? this.writeTimeOut : AppConstants.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
+                .connectTimeout(this.connTimeOut > 0 ? this.connTimeOut : AppConstants.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);         //连接超时时间
 
 
+        //设置代理IP
         if (!RequestClientUtils.isEmpty(proxyHost) && proxyPort != null && proxyPort > 0) {
-            okHttpClientBuild.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
+            okhttpClientBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
         }
 
+        //启用Cookie
         if (this.useCookie) {
-            okHttpClientBuild.cookieJar(new CookieManager(getRequestCookie()));
+            okhttpClientBuilder.cookieJar(new CookieManager(getRequestCookie()));
         }
 
-        if (!isUseSSL()) {
-            return okHttpClientBuild;
+        //启用https
+        if (isUseSSL()) {
+            //有设置证书文件
+            if (this.certificate == null) {
+                okhttpClientBuilder
+                        .sslSocketFactory(SSLManager.createSSLSocketFactory(), new SSLManager.TrustAllCerts())
+                        .hostnameVerifier(new SSLManager.TrustAllHostnameVerifier())
+                        .build();
+            } else {
+                okhttpClientBuilder
+                        .sslSocketFactory(SSLManager.createSSLSocketFactory(this.certificate))
+                        .hostnameVerifier(new SSLManager.TrustAllHostnameVerifier())
+                        .build();
+            }
         }
 
-        return okHttpClientBuild
-                .sslSocketFactory(SSLManager.createSSLSocketFactory(), new SSLManager.TrustAllCerts())
-                .hostnameVerifier(new SSLManager.TrustAllHostnameVerifier());
+        return okhttpClientBuilder.build();
     }
+
+
 
     private boolean isUseSSL() {
         return !RequestClientUtils.isEmpty(this.url) && this.url.toLowerCase().startsWith("https");

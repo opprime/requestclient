@@ -20,7 +20,6 @@ public abstract class AbstractBuilder<T extends AbstractBuilder> extends Abstrac
 
 
 
-
     /**
      * 同步，带返回值
      * */
@@ -74,8 +73,6 @@ public abstract class AbstractBuilder<T extends AbstractBuilder> extends Abstrac
             }
         });
     }
-
-
 
 
 
