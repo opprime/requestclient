@@ -14,6 +14,7 @@ public abstract class AbstractAttribute {
     protected Map<String, String> cookies;
     protected Map<String, String> bodyString;
     protected Map<String, FileBody> bodyFile;
+    protected String bodyJSON;
     protected boolean useCookie = false;
 
     protected ContentType contentType;

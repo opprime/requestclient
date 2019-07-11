@@ -45,6 +45,7 @@ public class RequestBuild extends AbstractAttribute {
         this.cookies = abstractBuilder.cookies;
         this.bodyString = abstractBuilder.bodyString;
         this.bodyFile = abstractBuilder.bodyFile;
+        this.bodyJSON = abstractBuilder.bodyJSON;
         this.useCookie = abstractBuilder.useCookie;
 
         this.contentType = abstractBuilder.contentType;
@@ -95,8 +96,15 @@ public class RequestBuild extends AbstractAttribute {
 
 
     private RequestBody buildRequestBody() {
-        //纯参数 或 JSON参数
-        if (bodyFile == null || bodyFile.isEmpty()) {
+        if (contentType == ContentType.JSON) {
+            //JSON参数
+            if (this.bodyJSON == null) {
+                throw new IllegalArgumentException("request must be not null, when contentType is json");
+            }
+
+            return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyJSON);
+        } else if (bodyFile == null || bodyFile.isEmpty()) {
+            //纯参数
             FormBody.Builder formBodyBuilder = new FormBody.Builder();
             if (bodyString != null && !bodyString.isEmpty()) {
                 for (Map.Entry<String, String> stringStringEntry : bodyString.entrySet()) {

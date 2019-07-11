@@ -4,7 +4,7 @@
 
     <groupId>org.hothub</groupId>
     <artifactId>requestclient</artifactId>
-    <version>1.0.13-SNAPSHOT</version>
+    <version>1.0.13</version>
     <packaging>jar</packaging>
     <name>requestclient</name>
     <url>http://hothub.org/</url>

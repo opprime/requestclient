@@ -47,6 +47,13 @@ public class PostBuilder extends AbstractBuilder<PostBuilder> {
         return this;
     }
 
+    public PostBuilder body(String json) {
+        this.bodyJSON = json;
+
+        return this;
+    }
+
+
     public PostBuilder contentType(ContentType contentType) {
         this.contentType = contentType;
 
