@@ -46,6 +46,7 @@ public class RequestBuild extends AbstractAttribute {
         this.bodyString = abstractBuilder.bodyString;
         this.bodyFile = abstractBuilder.bodyFile;
         this.bodyJSON = abstractBuilder.bodyJSON;
+        this.bodyCustom= abstractBuilder.bodyCustom;
         this.useCookie = abstractBuilder.useCookie;
 
         this.contentType = abstractBuilder.contentType;
@@ -103,6 +104,20 @@ public class RequestBuild extends AbstractAttribute {
             }
 
             return RequestBody.create(MediaType.parse("application/json; charset=utf-8"), bodyJSON);
+        } else if (contentType == ContentType.APPLICATION_XML) {
+            //XML参数
+            if (this.bodyCustom == null) {
+                throw new IllegalArgumentException("request must be not null, when contentType is application xml");
+            }
+
+            return RequestBody.create(MediaType.parse("application/xml; charset=utf-8"), bodyCustom);
+        } else if (contentType == ContentType.TEXT_XML) {
+            //XML参数
+            if (this.bodyCustom == null) {
+                throw new IllegalArgumentException("request must be not null, when contentType is text xml");
+            }
+
+            return RequestBody.create(MediaType.parse("text/xml; charset=utf-8"), bodyCustom);
         } else if (bodyFile == null || bodyFile.isEmpty()) {
             //纯参数
             FormBody.Builder formBodyBuilder = new FormBody.Builder();

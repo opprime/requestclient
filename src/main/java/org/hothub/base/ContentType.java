@@ -10,6 +10,8 @@ public enum  ContentType {
 
     URL_ENCODE("application/x-www-form-urlencoded"),
     JSON("application/json"),
+    APPLICATION_XML("application/xml"),
+    TEXT_XML("text/xml"),
     FORM_DATA("multipart/form-data");
 
     private String type;

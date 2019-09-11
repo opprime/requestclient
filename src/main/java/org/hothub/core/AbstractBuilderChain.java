@@ -19,6 +19,8 @@ public abstract class AbstractBuilderChain<T> extends AbstractAttribute {
         this.bodyString = null;
         this.bodyFile = null;
         this.bodyJSON = null;
+        this.bodyCustom = null;
+        this.contentType = null;
 
         return (T) this;
     }

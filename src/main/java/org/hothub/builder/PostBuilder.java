@@ -53,6 +53,12 @@ public class PostBuilder extends AbstractBuilder<PostBuilder> {
         return this;
     }
 
+    public PostBuilder body(String body, ContentType contentType) {
+        this.bodyCustom = body;
+        this.contentType = contentType;
+
+        return this;
+    }
 
     public PostBuilder contentType(ContentType contentType) {
         this.contentType = contentType;
