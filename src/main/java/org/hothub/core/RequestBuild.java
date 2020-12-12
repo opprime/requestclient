@@ -278,14 +278,14 @@ public class RequestBuild extends AbstractAttribute {
 
     private OkHttpClient configOkHttpClient(OkHttpClient okHttpClient) {
         //使用默认配置时，直接返回
-        if (this.readTimeOut <= 0 && this.writeTimeOut <= 0 && this.connTimeOut <= 0
-                && !followRedirects && !followSslRedirects
-                && !this.useCookie
-                && !isUseSSL()
-                && RequestClientUtils.isEmpty(proxyHost)
-                && !this.useCookie) {
-            return okHttpClient;
-        }
+//        if (this.readTimeOut <= 0 && this.writeTimeOut <= 0 && this.connTimeOut <= 0
+//                && !followRedirects && !followSslRedirects
+//                && !this.useCookie
+//                && !isUseSSL()
+//                && RequestClientUtils.isEmpty(proxyHost)
+//                && !this.useCookie) {
+//            return okHttpClient;
+//        }
 
 
         //有自定义配置 newBuilder
