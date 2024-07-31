@@ -26,6 +26,7 @@ public class ResultBody {
     private List<Cookie> responseCookieList;
 
     private Buffer buffer;
+    private String string;
 
 
     public ResultBody(Request request, Response response, CookieHolder cookieHolder) {
@@ -53,11 +54,17 @@ public class ResultBody {
 
     @Override
     public String toString() {
+        if (!RequestClientUtils.isEmpty(this.string)) {
+            return this.string;
+        }
+
         if (this.buffer == null) {
             return null;
         }
 
-        return this.buffer.readString(StandardCharsets.UTF_8);
+        this.string = this.buffer.clone().readString(StandardCharsets.UTF_8);
+
+        return this.string;
     }
 
 

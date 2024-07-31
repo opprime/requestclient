@@ -14,6 +14,7 @@ public class RequestTest {
                 .execute();
 
         System.out.println(getBody.toString());
+        System.out.println(getBody.toString());
 
         //System.out.println(getBody.getResponseCookie());
         //System.out.println(getBody.toByte().length);
@@ -24,7 +25,7 @@ public class RequestTest {
                 .body("from", "abc")
                 .execute();
 
-        System.out.println(postBody.toString());
+        //System.out.println(postBody.toString());
 
     }
 

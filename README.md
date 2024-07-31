@@ -13,7 +13,7 @@
     <dependency>
         <groupId>org.hothub</groupId>
         <artifactId>requestclient</artifactId>
-        <version>2.0.2</version>
+        <version>2.0.3</version>
     </dependency>
 
     <!-- 如果项目中未引用OkHttp，则还需要添加下面的引用 -->
@@ -26,8 +26,8 @@
 
 >gradle引用
 ```
-    compile 'org.hothub:requestclient:2.0.2'
-    
+    compile 'org.hothub:requestclient:2.0.3'
+
     <!-- 如果项目中未引用OkHttp，则还需要添加下面的引用 -->
     compile 'com.squareup.okhttp3:okhttp:4.9.3'
 ```
