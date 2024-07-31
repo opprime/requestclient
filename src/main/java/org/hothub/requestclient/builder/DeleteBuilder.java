@@ -8,4 +8,9 @@ public class DeleteBuilder extends AbstractBuilder<DeleteBuilder> {
     public RequestMethod getRequestMethod() {
         return RequestMethod.DELETE;
     }
+
+    @Override
+    protected DeleteBuilder context() {
+        return DeleteBuilder.this;
+    }
 }

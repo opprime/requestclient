@@ -29,4 +29,10 @@ public class GetBuilder extends AbstractBuilder<GetBuilder> {
     }
 
 
+    @Override
+    protected GetBuilder context() {
+        return GetBuilder.this;
+    }
+
+
 }

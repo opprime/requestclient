@@ -72,5 +72,10 @@ public class PostBuilder extends AbstractBuilder<PostBuilder> {
         return RequestMethod.POST;
     }
 
+    @Override
+    protected PostBuilder context() {
+        return PostBuilder.this;
+    }
+
 
 }

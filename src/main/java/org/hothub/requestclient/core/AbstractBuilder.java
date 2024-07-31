@@ -82,13 +82,15 @@ public abstract class AbstractBuilder<T> extends AbstractAttribute {
 
 
 
+
+
     public abstract RequestMethod getRequestMethod();
 
+    protected abstract T context();
 
 
 
-
-    public AbstractBuilder<T> init() {
+    public T init() {
         this.url = null;
         this.params = null;
         this.headers = null;
@@ -99,17 +101,17 @@ public abstract class AbstractBuilder<T> extends AbstractAttribute {
         this.bodyCustom = null;
         this.contentType = null;
 
-        return this;
+        return context();
     }
 
 
-    public AbstractBuilder<T> url(String url) {
+    public T url(String url) {
         this.url = url;
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> header(String key, String value) {
+    public T header(String key, String value) {
         if (this.headers == null) {
             this.headers = new LinkedHashMap<>();
         }
@@ -118,10 +120,10 @@ public abstract class AbstractBuilder<T> extends AbstractAttribute {
             this.headers.put(key, value);
         }
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> cookie(String key, String value) {
+    public T cookie(String key, String value) {
         if (this.cookies == null) {
             this.cookies = new LinkedHashMap<>();
         }
@@ -130,10 +132,10 @@ public abstract class AbstractBuilder<T> extends AbstractAttribute {
             this.cookies.put(key, value);
         }
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> cookie(List<Cookie> cookieList) {
+    public T cookie(List<Cookie> cookieList) {
         if (this.cookies == null) {
             this.cookies = new LinkedHashMap<>();
         }
@@ -148,51 +150,51 @@ public abstract class AbstractBuilder<T> extends AbstractAttribute {
             }
         }
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> withCookie(boolean useCookie) {
+    public T withCookie(boolean useCookie) {
         this.useCookie = useCookie;
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> readTimeOut(long readTimeOut) {
+    public T readTimeOut(long readTimeOut) {
         this.readTimeOut = readTimeOut;
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> writeTimeOut(long writeTimeOut) {
+    public T writeTimeOut(long writeTimeOut) {
         this.writeTimeOut = writeTimeOut;
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> connTimeOut(long connTimeOut) {
+    public T connTimeOut(long connTimeOut) {
         this.connTimeOut = connTimeOut;
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> followRedirect(boolean http, boolean https) {
+    public T followRedirect(boolean http, boolean https) {
         this.followRedirects = http;
         this.followSslRedirects = https;
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> proxy(String proxyHost, Integer proxyPort) {
+    public T proxy(String proxyHost, Integer proxyPort) {
         this.proxyHost = proxyHost;
         this.proxyPort = proxyPort;
 
-        return this;
+        return context();
     }
 
-    public AbstractBuilder<T> certificate(FileBody certificate) {
+    public T certificate(FileBody certificate) {
         this.certificate = certificate;
 
-        return this;
+        return context();
     }
 
 }

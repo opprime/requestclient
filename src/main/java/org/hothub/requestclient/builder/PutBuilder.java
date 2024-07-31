@@ -8,4 +8,9 @@ public class PutBuilder extends AbstractBuilder<PutBuilder> {
     public RequestMethod getRequestMethod() {
         return RequestMethod.PUT;
     }
+
+    @Override
+    protected PutBuilder context() {
+        return PutBuilder.this;
+    }
 }
