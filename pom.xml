@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.hothub</groupId>
     <artifactId>requestclient</artifactId>
     <version>1.0.16</version>
@@ -12,7 +11,7 @@
 
     <properties>
         <junit.version>4.13.1</junit.version>
-        <slf4j.version>1.7.13</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
         <okhttp.version>4.9.3</okhttp.version>
         <!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
     </properties>
