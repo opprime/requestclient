@@ -4,6 +4,7 @@ import org.hothub.requestclient.RequestClient;
 import org.hothub.requestclient.response.ResultBody;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class RequestTest {
 
@@ -15,6 +16,7 @@ public class RequestTest {
 
         System.out.println(getBody.toString());
         System.out.println(getBody.toString());
+        System.out.println(Arrays.toString(getBody.toByte()));
 
         //System.out.println(getBody.getResponseCookie());
         //System.out.println(getBody.toByte().length);
